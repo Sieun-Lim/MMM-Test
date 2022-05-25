@@ -45,7 +45,7 @@ Module.register("MMM-Test", {
         알림 수신.
 
         MagicMirror와 모듈이 서로 통신하는 notification을 사용하여 송수신 가능
-        결과는 이전과 동일하게 뽀이나, "DOM_OBJETS_CREATED" 알림이 수신된 후에 타이머가 시작되었지만
+        결과는 이전과 동일하게 보이나, "DOM_OBJETS_CREATED" 알림이 수신된 후에 타이머가 시작되었지만
         모듈이 로드될 때는 시작되지 않음
 
         즉, 모든 모듈이 처음 DOM_OBJECTS_CREATED 로드되고 렌더링 될 때 알림이 발생하고
