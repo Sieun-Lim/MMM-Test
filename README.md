@@ -6,5 +6,5 @@ MMM-Test
     cd MMM-Test
     npm install
 
-###  Screenshot ###
-![MMM-Test](https://user-images.githubusercontent.com/97720335/170291530-2eb9891a-887b-4d8a-a0ea-4ff90935acdb.png)
+### 스크린샷 ###
+![MMM-Test](https://user-images.githubusercontent.com/97720335/170292507-756d0a64-90ef-4701-97ec-9bd4925de61d.png)
