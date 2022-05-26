@@ -1,5 +1,5 @@
 /* 
-    2022.05.25 
+    2022.05.26
     Module first test
 */
 
@@ -24,21 +24,29 @@ Module.register("MMM-Test", {
         }, 1000)
     },
 
+    getStyles: function () {
+        return ['MMM-Test.css'];
+    },
+
     /* 
         MagicMirror 화면 콘첸츠를 렌더링.
         MagicMirror 모듈의 출력을 새로 고침할 때 MagicMirror 코어에 의해 호출됨
     */
     getDom: function () {
+        var wrapper = document.createElement("div")
+
         var element = document.createElement("div")
         element.className = "myContent"
-        element.innerHTML = "Hello, World!   " + this.config.foo
+        element.innerHTML = "Hello, " + this.config.foo
         
         var subElement = document.createElement("p")
         subElement.innerHTML = "Count(1초마다 업데이트):  " + this.count
         subElement.id = "COUNT"
-        element.appendChild(subElement)
+        
+        wrapper.appendChild(element)
+        wrapper.appendChild(subElement)
 
-        return element   
+        return wrapper   
     },
 
     /* 
