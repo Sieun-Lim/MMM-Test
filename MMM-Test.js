@@ -7,7 +7,7 @@ Module.register("MMM-Test", {
 
     /* MagicMirror config.js에 표시. */
     defaults: {
-        foo: "I'm Sieun!"
+        foo: "temperature"
     },
 
     /* 
@@ -37,13 +37,92 @@ Module.register("MMM-Test", {
 
         var element = document.createElement("div")
         element.className = "myContent"
-        element.innerHTML = "Hello, " + this.config.foo
+        element.innerHTML = this.config.foo
         
         var subElement = document.createElement("p")
-        subElement.innerHTML = "Count(1초마다 업데이트):  " + this.count
+        subElement.innerHTML = "Count(Update every second):  " + this.count
         subElement.id = "COUNT"
         
+        var table = document.createElement("table")
+        var tbdy = document.createElement("tbody")
+
+        for(var i=0; i<3; i++) {
+            var tr = document.createElement("tr")
+            var icon = document.createElement("i")
+
+            switch (i) {
+                case 0:
+                    var HDHeader1 = document.createElement("div")
+                    var textHeader1 = document.createTextNode(" ")
+                    var HDHeader2 = document.createElement("div")
+                    var textHeader2 = document.createTextNode("Today")
+                    var HDHeader3 = document.createElement("div")
+                    var textHeader3 = document.createTextNode("Yesterday")
+                case 1: 
+                    var icon_img = "home"
+                    var textDiv = document.createElement("div")
+                    var text = document.createTextNode("23°C")
+                    var textDiv2 = document.createElement("div")
+                    var text2 = document.createTextNode("25°C")
+                    break
+
+                case 2:
+                    var icon_img = "sign-out"
+                    var textDiv = document.createElement("div")
+                    var text = document.createTextNode("24°C")
+                    var textDiv2 = document.createElement("div")
+                    var text2 = document.createTextNode("26°C")
+                    break
+            }
+
+            // var HeaderHD_text = document.createTextNode(" ")
+
+            if(i == 0) {
+                HDHeader1.className = 'temper-HeaderHD1'
+                HDHeader1.appendChild(textHeader1)
+                HDHeader2.className = 'temper-HeaderHD2'
+                HDHeader2.appendChild(textHeader2)
+                HDHeader3.className = 'temper-HeaderHD3'
+                HDHeader3.appendChild(textHeader3)
+
+                var td = document.createElement('td')
+                td.appendChild(HDHeader1)
+                tr.appendChild(td)
+                var td = document.createElement('td')
+                td.appendChild(HDHeader2)
+                tr.appendChild(td)
+                var td = document.createElement('td')
+                td.appendChild(HDHeader3)
+                tr.appendChild(td)
+
+            } else {
+                icon.className = 'fa fa-' + icon_img + ' temper-icon'
+
+                textDiv.className = 'temper-text'
+                textDiv.appendChild(text)
+                textDiv2.className = 'temper-text2'
+                textDiv2.appendChild(text2)
+    
+                var td = document.createElement("td")
+                td.className = 'temper-td-icon'
+                td.appendChild(icon)
+                tr.appendChild(td)
+    
+                var td = document.createElement('td')
+                td.appendChild(textDiv)
+                tr.appendChild(td)
+    
+                var td = document.createElement('td')
+                td.appendChild(textDiv2)
+                tr.appendChild(td)
+            }
+            
+            tbdy.appendChild(tr)
+        }
+        table.appendChild(tbdy)
+
         wrapper.appendChild(element)
+        wrapper.appendChild(table)
         wrapper.appendChild(subElement)
 
         return wrapper   
