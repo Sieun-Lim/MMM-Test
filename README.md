@@ -23,7 +23,7 @@ Add it to the modules array in the `config/config.js` file:
     module: "MMM-Test",
     position: "top_left",
     config: {
-        foo: "I'm Sieun.. haha..."
+        foo: "temperature"
     }
 },
 ```
