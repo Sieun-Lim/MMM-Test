@@ -1,0 +1,22 @@
+{
+  "name": "mmm-test",
+  "version": "1.0.0",
+  "description": "MMM-Test",
+  "main": "MMM-Test",
+  "scripts": {
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sieun-Lim/MMM-Test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sieun-Lim/MMM-Test/issues"
+  },
+  "homepage": "https://github.com/Sieun-Lim/MMM-Test#readme",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}
