@@ -33,6 +33,13 @@ Module.register("MMM-Test", {
         MagicMirror 모듈의 출력을 새로 고침할 때 MagicMirror 코어에 의해 호출됨
     */
     getDom: function () {
+        var weather = this.weatherInfo;
+        out_temp = weather[0].temper;
+        var out_temp_avg = 0;
+        for(var i=0; i<weather.length; i++) {
+            out_temp_avg += weather[i].temper;
+        }
+        out_temp_avg = Math.round(out_temp_avg/weather.length*10)/10;
         var wrapper = document.createElement("div")
 
         var element = document.createElement("div")
@@ -69,9 +76,9 @@ Module.register("MMM-Test", {
                 case 2:
                     var icon_img = "sign-out"
                     var textDiv = document.createElement("div")
-                    var text = document.createTextNode("24°C")
+                    var text = document.createTextNode(out_temp)
                     var textDiv2 = document.createElement("div")
-                    var text2 = document.createTextNode("26°C")
+                    var text2 = document.createTextNode(out_temp_avg)
                     break
             }
 
@@ -141,6 +148,8 @@ Module.register("MMM-Test", {
     notificationReceived: function (notification, payload, sender) {
         switch(notification) {
             case "DOM_OBJETS_CREATED":
+                Log.info("Requesting weather info");
+                this.sendSocketNotificaiton("GET_WEATHER");
                 var timer = serInterval(() => {
                     this.updateDom()
                     this.count++
@@ -149,6 +158,17 @@ Module.register("MMM-Test", {
         }
     },
 
-
-    socketNotificationReceived: function () {},
+    socketNotificationReceived: function (notification, payload) {
+        switch (notification) {
+          case "WEATHER_DATA":
+            this.loaded = true;
+            console.log("NotificationReceived:" + notification);
+            this.weatherInfo = payload;
+            this.updateDom();
+            break;
+          case "WEATHER_DATA_ERROR":
+            this.updateDom();
+            break;
+        }
+      },
 });
