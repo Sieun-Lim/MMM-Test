@@ -59,10 +59,11 @@ module.exports = NodeHelper.create({
                 db.connect();
                 db.query("select temper from temperature order by temRank DESC", function (error, result) {
                     if (error) {
-                      self.sendSocketNotification("WEATHER_DATA_ERROR", result);
+                        self.sendSocketNotification("WEATHER_DATA_ERROR", result);
                     }
                     else {
-                      self.sendSocketNotification("WEATHER_DATA", result);
+                        console.log(result);
+                        self.sendSocketNotification("WEATHER_DATA", result);
                     }
                   });
                 db.end();
