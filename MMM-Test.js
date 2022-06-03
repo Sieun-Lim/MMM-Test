@@ -33,7 +33,6 @@ Module.register("MMM-Test", {
         MagicMirror 모듈의 출력을 새로 고침할 때 MagicMirror 코어에 의해 호출됨
     */
     getDom: function () {
-        var weather = this.weatherInfo;
         var wrapper = document.createElement("div")
 
         var element = document.createElement("div")
@@ -46,6 +45,8 @@ Module.register("MMM-Test", {
         
         var table = document.createElement("table")
         var tbdy = document.createElement("tbody")
+
+        var weather = this.weatherInfo;
 
         for(var i=0; i<3; i++) {
             var tr = document.createElement("tr")
