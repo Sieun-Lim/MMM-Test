@@ -57,7 +57,7 @@ module.exports = NodeHelper.create({
         switch(notification) {
             case "GET_WEATHER":
                 db.connect();
-                db.query("select temper from temperature order by temRank DESC", function (error, result) {
+                db.query("select temper from temperature where temRank='1' order by temRank DESC", function (error, result) {
                     if (error) {
                         self.sendSocketNotification("WEATHER_DATA_ERROR", result);
                     }
