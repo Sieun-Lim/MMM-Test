@@ -23,7 +23,7 @@ module.exports = NodeHelper.create({
         this.countDown = 10000000
     },
 
-    getDom: function () {
+    /*getDom: function () {
         var wrapper = document.createElement("div")
 
         var element = document.createElement("div")
@@ -38,7 +38,7 @@ module.exports = NodeHelper.create({
         wrapper.appendChild(subElement)
 
         return wrapper   
-    },
+    },*/
 
     socketNotificationReceived: function (notification, payload) {
         let self = this;
