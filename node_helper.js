@@ -52,7 +52,7 @@ module.exports = NodeHelper.create({
         }
     },
 
-    socketNotificationReceived: function(notification, payload) {
+    socketNotificationReceived: function (notification, payload) {
         let self = this;
         switch(notification) {
             case "GET_WEATHER":
@@ -62,7 +62,6 @@ module.exports = NodeHelper.create({
                         self.sendSocketNotification("WEATHER_DATA_ERROR", result);
                     }
                     else {
-                        console.log(result);
                         self.sendSocketNotification("WEATHER_DATA", result);
                     }
                   });
