@@ -74,7 +74,7 @@ Module.register("MMM-Test", {
                 case 2:
                     var icon_img = "sign-out"
                     var textDiv = document.createElement("div")
-                    var text1 = document.createTextNode("1")
+                    var text = document.createTextNode("1")
                     var textDiv2 = document.createElement("div")
                     var text2 = document.createTextNode("26°C")
                     break
