@@ -142,7 +142,7 @@ Module.register("MMM-Test", {
     */
     notificationReceived: function (notification, payload, sender) {
         switch(notification) {
-            case "DOM_OBJETS_CREATED":
+            case "DOM_OBJECTS_CREATED":
                 Log.info("Requesting weather info");
                 this.sendSocketNotification("GET_WEATHER");
                 var timer = serInterval(() => {
