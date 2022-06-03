@@ -7,7 +7,7 @@
     실행되기 때문에 브라우저가 제공할 수 있는 것보다 더 많은 것이 필요할 대 사용한다.
 */
 
-var NodeHelper = require("node_helper")
+const NodeHelper = require("node_helper");
 const mysql = require('mysql');
 
 const db = mysql.createConnection({
@@ -47,7 +47,6 @@ module.exports = NodeHelper.create({
             db.connect();
             db.query("select temper from temperature order by temRank DESC", function (error, result) {
               if (error) {
-                console.log(error);
                 self.sendSocketNotification("WEATHER_DATA_ERROR", result);
               }
               else {
