@@ -7,7 +7,17 @@
     실행되기 때문에 브라우저가 제공할 수 있는 것보다 더 많은 것이 필요할 대 사용한다.
 */
 
-var NodeHelper = require("node_helper")
+const { DEC8_BIN } = require("mysql/lib/protocol/constants/charsets")
+const NodeHelper = require("node_helper");
+const mysql = require('mysql');
+
+const db = mysql.createConnection({
+	host: '119.194.240.110',
+	port: 33060,
+	user: 'tlsl13',
+	password: '1234',
+	database: 'DBtest'
+});
 
 module.exports = NodeHelper.create({
     start: function() {
@@ -43,11 +53,19 @@ module.exports = NodeHelper.create({
     },
 
     socketNotificationReceived: function(notification, payload) {
+        let self = this;
         switch(notification) {
-            case "I_DID":
-                var elem = document.getElementById("COUNT")
-                elem.innerHTML = "Count:" + payload
-                break
+            case "GET_WEATHER":
+                db.connect();
+                db.query("select temper from temperature order by temRank DESC", function (error, result) {
+                    if (error) {
+                      self.sendSocketNotification("WEATHER_DATA_ERROR", result);
+                    }
+                    else {
+                      self.sendSocketNotification("WEATHER_DATA", result);
+                    }
+                  });
+                db.end();
         }
     },
 })

@@ -33,6 +33,7 @@ Module.register("MMM-Test", {
         MagicMirror 모듈의 출력을 새로 고침할 때 MagicMirror 코어에 의해 호출됨
     */
     getDom: function () {
+        var weather = this.weatherInfo;
         var wrapper = document.createElement("div")
 
         var element = document.createElement("div")
@@ -69,7 +70,7 @@ Module.register("MMM-Test", {
                 case 2:
                     var icon_img = "sign-out"
                     var textDiv = document.createElement("div")
-                    var text = document.createTextNode("24°C")
+                    textDiv.innerHTML = weather[0].temper;
                     var textDiv2 = document.createElement("div")
                     var text2 = document.createTextNode("26°C")
                     break
@@ -141,6 +142,8 @@ Module.register("MMM-Test", {
     notificationReceived: function (notification, payload, sender) {
         switch(notification) {
             case "DOM_OBJETS_CREATED":
+                Log.info("Requesting weather info");
+                this.sendSocketNotification("GET_WEATHER");
                 var timer = serInterval(() => {
                     this.updateDom()
                     this.count++
@@ -150,5 +153,16 @@ Module.register("MMM-Test", {
     },
 
 
-    socketNotificationReceived: function () {},
+    socketNotificationReceived: function (notification, payload) {
+        switch (notification) {
+        case "WEATHER_DATA":
+            console.log("NotificationReceived:" + notification);
+            this.weatherInfo = payload;
+            this.updateDom();
+            break;
+        case "WEATHER_DATA_ERROR":
+            this.updateDom();
+            break;
+        }
+    },
 });
