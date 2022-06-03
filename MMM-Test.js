@@ -48,7 +48,8 @@ Module.register("MMM-Test", {
         var tbdy = document.createElement("tbody")
 
         var weather = this.weatherInfo;
-        var temp_out = weather[0].temper;
+        console.log(weather);
+        //var temp_out = weather[0].temper;
 
         for(var i=0; i<3; i++) {
             var tr = document.createElement("tr")
@@ -73,7 +74,7 @@ Module.register("MMM-Test", {
                 case 2:
                     var icon_img = "sign-out"
                     var textDiv = document.createElement("div")
-                    var text1 = document.createTextNode(temp_out)
+                    var text1 = document.createTextNode("1")
                     var textDiv2 = document.createElement("div")
                     var text2 = document.createTextNode("26°C")
                     break
