@@ -50,6 +50,7 @@ module.exports = NodeHelper.create({
                 self.sendSocketNotification("WEATHER_DATA_ERROR", result);
               }
               else {
+                console.log(result);
                 self.sendSocketNotification("WEATHER_DATA", result);
               }
             });
