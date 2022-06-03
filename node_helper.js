@@ -7,23 +7,14 @@
     실행되기 때문에 브라우저가 제공할 수 있는 것보다 더 많은 것이 필요할 대 사용한다.
 */
 
-const NodeHelper = require("node_helper");
-const mysql = require('mysql');
-
-const db = mysql.createConnection({
-	host: '119.194.240.110',
-	port: 33060,
-	user: 'tlsl13',
-	password: '1234',
-	database: 'DBtest'
-});
+var NodeHelper = require("node_helper")
 
 module.exports = NodeHelper.create({
     start: function() {
         this.countDown = 10000000
     },
 
-    /*getDom: function () {
+    getDom: function () {
         var wrapper = document.createElement("div")
 
         var element = document.createElement("div")
@@ -38,23 +29,25 @@ module.exports = NodeHelper.create({
         wrapper.appendChild(subElement)
 
         return wrapper   
-    },*/
+    },
 
-    socketNotificationReceived: function (notification, payload) {
-        let self = this;
-        switch (notification) {
-          case "GET_WEATHER":
-            db.connect();
-            db.query("select temper from temperature order by temRank DESC", function (error, result) {
-              if (error) {
-                self.sendSocketNotification("WEATHER_DATA_ERROR", result);
-              }
-              else {
-                console.log(result);
-                self.sendSocketNotification("WEATHER_DATA", result);
-              }
-            });
-            db.end();
+    notificationReceived: function(notification, payload, sender) {
+        switch(notification) {
+            case "DOM_OBJECTS_CREATED":
+                var timer = setInterval(()=>{
+                    this.sendSocketNotification("DO_YOUR_JOB", this.count)
+                    this.count++
+                }, 1000)
+                break
         }
-      },
+    },
+
+    socketNotificationReceived: function(notification, payload) {
+        switch(notification) {
+            case "I_DID":
+                var elem = document.getElementById("COUNT")
+                elem.innerHTML = "Count:" + payload
+                break
+        }
+    },
 })
