@@ -17,6 +17,7 @@ Module.register("MMM-Test", {
         출력을 업데이트 하고싶을 때미디 .updateDom() MM.getDom()을 사용하여 재로딩 가능
     */
     start: function () {
+        Log.info("Starting module: " + this.name);
         this.count = 0
         var timer = setInterval(() => {
             this.updateDom()

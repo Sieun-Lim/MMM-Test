@@ -68,4 +68,4 @@ module.exports = NodeHelper.create({
                 db.end();
         }
     },
-})
+});
