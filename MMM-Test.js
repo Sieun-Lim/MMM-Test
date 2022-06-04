@@ -4,7 +4,7 @@
 */
 
 Module.register("MMM-Test", {
-
+	requiresVersion: "2.12.0",
     /* MagicMirror config.js에 표시. */
     defaults: {
         foo: "temperature"
@@ -18,11 +18,13 @@ Module.register("MMM-Test", {
     */
     start: function () {
         Log.info("Starting module: " + this.name);
-        this.count = 0
-        var timer = setInterval(() => {
-            this.updateDom()
-            this.count++
-        }, 1000)
+		this.weatherInfo = [];
+        this.loaded = false;
+        // this.count = 0
+        // var timer = setInterval(() => {
+            // this.updateDom()
+            // this.count++
+        // }, 1000 * 60)
     },
 
     getStyles: function () {
@@ -35,6 +37,9 @@ Module.register("MMM-Test", {
     */
     getDom: function () {
         var wrapper = document.createElement("div")
+		if (!this.loaded) {
+			return wrapper;
+		}
 
         var element = document.createElement("div")
         element.className = "myContent"
@@ -48,8 +53,7 @@ Module.register("MMM-Test", {
         var tbdy = document.createElement("tbody")
 
         var weather = this.weatherInfo;
-        console.log(weather);
-        //var temp_out = weather[0].temper;
+        var temp_out = weather[0].nowTime;
 
         for(var i=0; i<3; i++) {
             var tr = document.createElement("tr")
@@ -74,7 +78,7 @@ Module.register("MMM-Test", {
                 case 2:
                     var icon_img = "sign-out"
                     var textDiv = document.createElement("div")
-                    var text = document.createTextNode("1")
+                    var text = document.createTextNode(temp_out)
                     var textDiv2 = document.createElement("div")
                     var text2 = document.createTextNode("26°C")
                     break
@@ -143,30 +147,34 @@ Module.register("MMM-Test", {
         즉, 모든 모듈이 처음 DOM_OBJECTS_CREATED 로드되고 렌더링 될 때 알림이 발생하고
             getDom()을 현재 모듈에서 출력을 조정 가능
     */
-    notificationReceived: function (notification, payload, sender) {
-        switch(notification) {
-            case "DOM_OBJECTS_CREATED":
-                Log.info("Requesting weather info");
-                this.sendSocketNotification("GET_WEATHER");
-                var timer = serInterval(() => {
-                    this.updateDom()
-                    this.count++
-                }, 1000)
-                break
-        }
-    },
+	getWeatherInfo: function () {
+	  Log.info("Requesting weather info");
+	  this.sendSocketNotification("GET_WEATHER");
+	},
+	
+	notificationReceived: function (notification, payload, sender) {
+	  switch (notification) {
+		case "DOM_OBJECTS_CREATED":
+		  this.getWeatherInfo();
+		  var timer = setInterval(() => {
+            this.getWeatherInfo();
+		  }, 60000);
+		  break;
+	  }
+	},
 
 
     socketNotificationReceived: function (notification, payload) {
         switch (notification) {
-        case "WEATHER_DATA":
-            console.log("NotificationReceived:" + notification);
-            this.weatherInfo = payload;
-            this.updateDom();
-            break;
-        case "WEATHER_DATA_ERROR":
-            this.updateDom();
-            break;
+			case "WEATHER_DATA":
+				this.loaded = true;
+				console.log("NotificationReceived:" + notification);
+				this.weatherInfo = payload;
+				this.updateDom();
+				break;
+			case "WEATHER_DATA_ERROR":
+				this.updateDom();
+				break;
         }
     },
 });

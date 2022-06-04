@@ -21,27 +21,29 @@ const db = mysql.createConnection({
 
 module.exports = NodeHelper.create({
     start: function() {
-        this.countDown = 10000000
+		console.log("Starting node helper: " + this.name);
+		db.connect();
+        // this.countDown = 10000000
     },
 
-    getDom: function () {
-        var wrapper = document.createElement("div")
+    // getDom: function () {
+        // var wrapper = document.createElement("div")
 
-        var element = document.createElement("div")
-        element.className = "myContent"
-        element.innerHTML = "Hello, " + this.config.foo
+        // var element = document.createElement("div")
+        // element.className = "myContent"
+        // element.innerHTML = "Hello, " + this.config.foo
         
-        var subElement = document.createElement("p")
-        subElement.innerHTML = "Count(1초마다 업데이트):  " + this.count
-        subElement.id = "COUNT"
+        // var subElement = document.createElement("p")
+        // subElement.innerHTML = "Count(1초마다 업데이트):  " + this.count
+        // subElement.id = "COUNT"
         
-        wrapper.appendChild(element)
-        wrapper.appendChild(subElement)
+        // wrapper.appendChild(element)
+        // wrapper.appendChild(subElement)
 
-        return wrapper   
-    },
+        // return wrapper   
+    // },
 
-    notificationReceived: function(notification, payload, sender) {
+/*     notificationReceived: function(notification, payload, sender) {
         switch(notification) {
             case "DOM_OBJECTS_CREATED":
                 var timer = setInterval(()=>{
@@ -50,22 +52,32 @@ module.exports = NodeHelper.create({
                 }, 1000)
                 break
         }
-    },
+    }, */
 
     socketNotificationReceived: function (notification, payload) {
-        let self = this;
         switch(notification) {
             case "GET_WEATHER":
-                db.connect();
-                db.query("select temper from temperature where temRank=1 order by temRank DESC", function (error, result) {
-                    if (error) {
-                        self.sendSocketNotification("WEATHER_DATA_ERROR", result);
-                    }
-                    else {
-                        self.sendSocketNotification("WEATHER_DATA", result);
-                    }
-                  });
-                db.end();
+                let self = this;
+				self.getData(payload)
+				break;
         }
     },
+	
+	getData: async function (payload) {
+		let self = this;
+		db.query("select nowTime from temperature order by temRank DESC", function (error, result) {
+			if (error) {
+				console.log(error);
+				self.sendSocketNotification("WEATHER_DATA_ERROR", result);
+			}
+			else {
+				self.sendSocketNotification("WEATHER_DATA", result);
+			}
+		});
+	},
+	
+	stop: function() {
+		console.log("Shutting down DataBase");
+		db.end();
+	},
 });
