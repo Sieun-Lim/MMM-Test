@@ -65,7 +65,7 @@ module.exports = NodeHelper.create({
 	
 	getData: async function (payload) {
 		let self = this;
-		db.query("select nowTime from temperature order by temRank DESC", function (error, result) {
+		db.query("select temper from temperature order by temRank DESC", function (error, result) {
 			if (error) {
 				console.log(error);
 				self.sendSocketNotification("WEATHER_DATA_ERROR", result);
