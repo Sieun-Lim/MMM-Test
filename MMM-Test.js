@@ -53,7 +53,8 @@ Module.register("MMM-Test", {
         var tbdy = document.createElement("tbody")
 
         var weather = this.weatherInfo;
-        var temp_out = weather[0].temper + "°C";
+        var temp_out = weather[0].nowTime;
+        //var temp_out = weather[0].temper + "°C";
 
         for(var i=0; i<3; i++) {
             var tr = document.createElement("tr")
