@@ -183,7 +183,6 @@ Module.register("MMM-Test", {
 				this.loaded = true;
 				console.log("NotificationReceived:" + notification);
 				this.weatherInfo_out = payload;
-				this.updateDom();
 				break;
 			case "WEATHER_DATA_HOME":
 				this.loaded = true;
