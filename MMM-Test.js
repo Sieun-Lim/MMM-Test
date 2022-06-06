@@ -166,7 +166,7 @@ Module.register("MMM-Test", {
 		  this.getWeatherInfo();
 		  var timer = setInterval(() => {
             this.getWeatherInfo();
-		  }, 1000);
+		  }, 10000);
 		  break;
 	  }
 	},
