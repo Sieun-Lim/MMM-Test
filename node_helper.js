@@ -122,7 +122,7 @@ module.exports = NodeHelper.create({
 			var hours = ('0' + date.getHours()).slice(-2).toString();
 
 			var ymd = year + "-" + month + "-" + yesterday;
-			var query = "select temper from temperature_out where nowDay=" + "'" + ymd  + "'" + " AND nowTime LIKE " + "'" + hours + ":%'";
+			var query = "select temper from temperature_out where nowDay=" + "'" + ymd  + "'" + " AND nowTime LIKE " + "'" + hours + ":%'" + " order by temRank DESC";
 
 			let self = this;
 			db.query(query, function (error, result) {
@@ -131,7 +131,6 @@ module.exports = NodeHelper.create({
 					self.sendSocketNotification("WEATHER_DATA_ERROR", result);
 				}
 				else {
-					console.log(result);
 					self.sendSocketNotification("YESTERDAY_OUT", result);
 				}
 			});
