@@ -16,7 +16,7 @@ const db = mysql.createConnection({
 	port: 33060,
 	user: 'tlsl13',
 	password: '1234',
-	database: 'DBtest'
+	database: 'MMM_Temperature'
 });
 
 module.exports = NodeHelper.create({
