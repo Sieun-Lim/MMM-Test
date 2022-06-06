@@ -145,9 +145,10 @@ module.exports = NodeHelper.create({
 			var pos = yesterday.split("GMT");
 			yesterday = pos[0].substr(-17);
 			yesterday = yesterday.substr(0,2);
+			var hours = date.getHours();
 
 			var ymd = year + "-" + month + "-" + yesterday;
-			var query = "select temper from temperature_home where nowDay=" + "'" + ymd  + "'";
+			var query = "select temper from temperature_out where nowDay=" + "'" + ymd  + "'" "AND where nowTime=" + "'" + hours + ":%'";
 
 			let self = this;
 			db.query(query, function (error, result) {
