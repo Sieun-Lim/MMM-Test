@@ -52,13 +52,13 @@ Module.register("MMM-Test", {
         var table = document.createElement("table")
         var tbdy = document.createElement("tbody")
 
-        var weather = this.weatherInfo;
-        var temp_out = weather[0].temper + "°C";
+        var out = this.weatherInfo_out;
+        var temp_out = out[0].temper + "°C";
 				var temp_out_avg = 0;
-				for(var i=0; i<weather.length; i++)
-					temp_out_avg += weather[i].temper;
+				for(var i=0; i<out.length; i++)
+					temp_out_avg += out[i].temper;
 
-				temp_out_avg = Math.round(temp_out_avg/weather.length*10)/10;
+				temp_out_avg = Math.round(temp_out_avg/out.length*10)/10;
 				temp_out_avg = temp_out_avg + "°C";
 
         for(var i=0; i<3; i++) {
@@ -172,10 +172,16 @@ Module.register("MMM-Test", {
 
     socketNotificationReceived: function (notification, payload) {
         switch (notification) {
-			case "WEATHER_DATA":
+			case "WEATHER_DATA_OUT":
 				this.loaded = true;
 				console.log("NotificationReceived:" + notification);
-				this.weatherInfo = payload;
+				this.weatherInfo_out = payload;
+				this.updateDom();
+				break;
+			case "WEATHER_DATA_HOME":
+				this.loaded = true;
+				console.log("NotificationReceived:" + notification);
+				this.weatherInfo_home = payload;
 				this.updateDom();
 				break;
 			case "WEATHER_DATA_ERROR":

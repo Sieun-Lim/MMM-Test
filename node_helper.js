@@ -58,12 +58,13 @@ module.exports = NodeHelper.create({
         switch(notification) {
             case "GET_WEATHER":
                 let self = this;
-				self.getData(payload)
+								self.getOutData(payload);
+								self.getHomeData(payload);
 				break;
         }
     },
 
-	getData: async function (payload) {
+	getOutData: async function (payload) {
 		var sampleTimestamp = Date.now();
 		var date = new Date(sampleTimestamp);
 		var year = date.getFullYear().toString().slice(-2);
@@ -71,7 +72,7 @@ module.exports = NodeHelper.create({
 		var day = ("0" + date.getDate()).slice(-2);
 
 		var ymd = year + "-" + month + "-" + day;
-		var query = "select temper from temperature where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
+		var query = "select temper from temperature_out where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
 
 		let self = this;
 		db.query(query, function (error, result) {
@@ -80,7 +81,29 @@ module.exports = NodeHelper.create({
 				self.sendSocketNotification("WEATHER_DATA_ERROR", result);
 			}
 			else {
-				self.sendSocketNotification("WEATHER_DATA", result);
+				self.sendSocketNotification("WEATHER_DATA_OUT", result);
+			}
+		});
+	},
+
+	getHomeData: async function (payload) {
+		var sampleTimestamp = Date.now();
+		var date = new Date(sampleTimestamp);
+		var year = date.getFullYear().toString().slice(-2);
+		var month = ("0" + (date.getMonth() + 1)).slice(-2);
+		var day = ("0" + date.getDate()).slice(-2);
+
+		var ymd = year + "-" + month + "-" + day;
+		var query = "select temper from temperature_home where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
+
+		let self = this;
+		db.query(query, function (error, result) {
+			if (error) {
+				console.log(error);
+				self.sendSocketNotification("WEATHER_DATA_ERROR", result);
+			}
+			else {
+				self.sendSocketNotification("WEATHER_DATA_HOME", result);
 			}
 		});
 	},
