@@ -121,7 +121,7 @@ module.exports = NodeHelper.create({
 			yesterday = yesterday.substr(0,2);
 
 			var ymd = year + "-" + month + "-" + yesterday;
-			var query = "select temper from temperature_out where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
+			var query = "select temper from temperature_out where nowDay=" + "'" + ymd  + "'";
 
 			let self = this;
 			db.query(query, function (error, result) {
@@ -146,7 +146,7 @@ module.exports = NodeHelper.create({
 			yesterday = yesterday.substr(0,2);
 
 			var ymd = year + "-" + month + "-" + yesterday;
-			var query = "select temper from temperature_home where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
+			var query = "select temper from temperature_home where nowDay=" + "'" + ymd  + "'";
 
 			let self = this;
 			db.query(query, function (error, result) {
