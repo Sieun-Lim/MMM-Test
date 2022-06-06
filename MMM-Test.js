@@ -57,7 +57,7 @@ Module.register("MMM-Test", {
 				var yesterday_out = this.weatherYesterday_out;
 				var temp_out_avg = 0;
 				for(var i=0; i<yesterday_out.length; i++)
-					temp_out_avg += oyesterday_outut[i].temper;
+					temp_out_avg += yesterday_out[i].temper;
 				temp_out_avg = Math.round(temp_out_avg/yesterday_out.length*10)/10;
 				temp_out_avg = temp_out_avg + "°C";
 
