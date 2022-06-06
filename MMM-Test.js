@@ -57,9 +57,16 @@ Module.register("MMM-Test", {
 				var temp_out_avg = 0;
 				for(var i=0; i<out.length; i++)
 					temp_out_avg += out[i].temper;
-
 				temp_out_avg = Math.round(temp_out_avg/out.length*10)/10;
 				temp_out_avg = temp_out_avg + "°C";
+
+				var home = this.weatherInfo_home;
+        var temp_home = home[0].temper + "°C";
+				var temp_home_avg = 0;
+				for(var i=0; i<home.length; i++)
+					temp_home_avg += home[i].temper;
+				temp_home_avg = Math.round(temp_home_avg/home.length*10)/10;
+				temp_home_avg = temp_home_avg + "°C";
 
         for(var i=0; i<3; i++) {
             var tr = document.createElement("tr")
@@ -76,9 +83,9 @@ Module.register("MMM-Test", {
                 case 1:
                     var icon_img = "home"
                     var textDiv = document.createElement("div")
-                    var text = document.createTextNode("23°C")
+                    var text = document.createTextNode(temp_home)
                     var textDiv2 = document.createElement("div")
-                    var text2 = document.createTextNode("25°C")
+                    var text2 = document.createTextNode(temp_home_avg)
                     break
 
                 case 2:
