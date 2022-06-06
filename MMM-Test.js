@@ -55,21 +55,13 @@ Module.register("MMM-Test", {
         var temp_out = out[0].temper + "°C";
 
 				var yesterday_out = this.weatherYesterday_out;
-				var temp_out_avg = 0;
-				for(var i=0; i<yesterday_out.length; i++)
-					temp_out_avg += yesterday_out[i].temper;
-				temp_out_avg = Math.round(temp_out_avg/yesterday_out.length*10)/10;
-				temp_out_avg = temp_out_avg + "°C";
+				var yesterday_temp_out = yesterday_out[0].temper + "°C";
 
 				var home = this.weatherInfo_home;
         var temp_home = home[0].temper + "°C";
 
 				var yesterday_home = this.weatherYesterday_home;
-				var temp_home_avg = 0;
-				for(var i=0; i<yesterday_home.length; i++)
-					temp_home_avg += yesterday_home[i].temper;
-				temp_home_avg = Math.round(temp_home_avg/yesterday_home.length*10)/10;
-				temp_home_avg = temp_home_avg + "°C";
+				var yesterday_temp_home = yesterday_home[0].temper + "°C";
 
         for(var i=0; i<3; i++) {
             var tr = document.createElement("tr")
@@ -88,7 +80,7 @@ Module.register("MMM-Test", {
                     var textDiv = document.createElement("div")
                     var text = document.createTextNode(temp_home)
                     var textDiv2 = document.createElement("div")
-                    var text2 = document.createTextNode(temp_home_avg)
+                    var text2 = document.createTextNode(yesterday_temp_home)
                     break
 
                 case 2:
@@ -96,7 +88,7 @@ Module.register("MMM-Test", {
                     var textDiv = document.createElement("div")
                     var text = document.createTextNode(temp_out)
                     var textDiv2 = document.createElement("div")
-                    var text2 = document.createTextNode(temp_out_avg)
+                    var text2 = document.createTextNode(yesterday_temp_out)
                     break
             }
 
