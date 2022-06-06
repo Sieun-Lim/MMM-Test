@@ -19,11 +19,11 @@ Module.register("MMM-Test", {
     start: function () {
         Log.info("Starting module: " + this.name);
         this.loaded = false;
-        this.count = 0
+        /*this.count = 0
         var timer = setInterval(() => {
             this.updateDom()
             this.count++
-        }, 1000)
+        }, 1000)*/
     },
 
     getStyles: function () {
