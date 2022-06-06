@@ -1,4 +1,4 @@
-/* 
+/*
     2022.05.26
     Module first test
 */
@@ -10,8 +10,8 @@ Module.register("MMM-Test", {
         foo: "temperature"
     },
 
-    /* 
-        start() 및 updateDom()은 모듈이 성공적으로 로드되면 실행. 
+    /*
+        start() 및 updateDom()은 모듈이 성공적으로 로드되면 실행.
 
         모듈이 로드된 후의 모듈의 출력은 1초마다 업데이트 됨
         출력을 업데이트 하고싶을 때미디 .updateDom() MM.getDom()을 사용하여 재로딩 가능
@@ -31,7 +31,7 @@ Module.register("MMM-Test", {
         return ['MMM-Test.css'];
     },
 
-    /* 
+    /*
         MagicMirror 화면 콘첸츠를 렌더링.
         MagicMirror 모듈의 출력을 새로 고침할 때 MagicMirror 코어에 의해 호출됨
     */
@@ -44,17 +44,22 @@ Module.register("MMM-Test", {
         var element = document.createElement("div")
         element.className = "myContent"
         element.innerHTML = this.config.foo
-        
+
         var subElement = document.createElement("p")
         subElement.innerHTML = "Count(Update every second):  " + this.count
         subElement.id = "COUNT"
-        
+
         var table = document.createElement("table")
         var tbdy = document.createElement("tbody")
 
         var weather = this.weatherInfo;
-        var temp_out = weather[0].nowTime;
-        //var temp_out = weather[0].temper + "°C";
+        var temp_out = weather[0].temper + "°C";
+				var temp_out_avg = 0;
+				for(var i=0; i<weather.length; i++)
+					temp_out_avg += result[i].temper;
+
+				temp_out_avg = Math.round(temp_out_avg/weather.length*10)/10;
+				temp_out_avg = temp_out_avg + "°C";
 
         for(var i=0; i<3; i++) {
             var tr = document.createElement("tr")
@@ -68,7 +73,7 @@ Module.register("MMM-Test", {
                     var textHeader2 = document.createTextNode("Today")
                     var HDHeader3 = document.createElement("div")
                     var textHeader3 = document.createTextNode("Yesterday")
-                case 1: 
+                case 1:
                     var icon_img = "home"
                     var textDiv = document.createElement("div")
                     var text = document.createTextNode("23°C")
@@ -81,7 +86,7 @@ Module.register("MMM-Test", {
                     var textDiv = document.createElement("div")
                     var text = document.createTextNode(temp_out)
                     var textDiv2 = document.createElement("div")
-                    var text2 = document.createTextNode("26°C")
+                    var text2 = document.createTextNode(temp_out_avg)
                     break
             }
 
@@ -112,21 +117,21 @@ Module.register("MMM-Test", {
                 textDiv.appendChild(text)
                 textDiv2.className = 'temper-text2'
                 textDiv2.appendChild(text2)
-    
+
                 var td = document.createElement("td")
                 td.className = 'temper-td-icon'
                 td.appendChild(icon)
                 tr.appendChild(td)
-    
+
                 var td = document.createElement('td')
                 td.appendChild(textDiv)
                 tr.appendChild(td)
-    
+
                 var td = document.createElement('td')
                 td.appendChild(textDiv2)
                 tr.appendChild(td)
             }
-            
+
             tbdy.appendChild(tr)
         }
         table.appendChild(tbdy)
@@ -135,10 +140,10 @@ Module.register("MMM-Test", {
         wrapper.appendChild(table)
         wrapper.appendChild(subElement)
 
-        return wrapper   
+        return wrapper
     },
 
-    /* 
+    /*
         알림 수신.
 
         MagicMirror와 모듈이 서로 통신하는 notification을 사용하여 송수신 가능
@@ -152,7 +157,7 @@ Module.register("MMM-Test", {
 	  Log.info("Requesting weather info");
 	  this.sendSocketNotification("GET_WEATHER");
 	},
-	
+
 	notificationReceived: function (notification, payload, sender) {
 	  switch (notification) {
 		case "DOM_OBJECTS_CREATED":

@@ -1,5 +1,5 @@
 
-/* 
+/*
     MMM-Test.js와 마찬가지로 node_helper.js가 로드되어 모듈에 연결될 때 start()가 실행됨
     MMM-Test.js와 node_helper.js 사이에 socketNotification이 통신에 사용 (알림과 함께 표시됨)
 
@@ -32,15 +32,15 @@ module.exports = NodeHelper.create({
         // var element = document.createElement("div")
         // element.className = "myContent"
         // element.innerHTML = "Hello, " + this.config.foo
-        
+
         // var subElement = document.createElement("p")
         // subElement.innerHTML = "Count(1초마다 업데이트):  " + this.count
         // subElement.id = "COUNT"
-        
+
         // wrapper.appendChild(element)
         // wrapper.appendChild(subElement)
 
-        // return wrapper   
+        // return wrapper
     // },
 
 /*     notificationReceived: function(notification, payload, sender) {
@@ -62,10 +62,19 @@ module.exports = NodeHelper.create({
 				break;
         }
     },
-	
+
 	getData: async function (payload) {
+		var sampleTimestamp = Date.now();
+		var date = new Date(sampleTimestamp);
+		var year = date.getFullYear().toString().slice(-2);
+		var month = ("0" + (date.getMonth() + 1)).slice(-2);
+		var day = ("0" + date.getDate()).slice(-2);
+
+		var ymd = year + "-" + month + "-" + day;
+		var query = "select temper from temperature where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
+
 		let self = this;
-		db.query("select nowTime from temperature order by temRank DESC", function (error, result) {
+		db.query(query, function (error, result) {
 			if (error) {
 				console.log(error);
 				self.sendSocketNotification("WEATHER_DATA_ERROR", result);
@@ -75,7 +84,7 @@ module.exports = NodeHelper.create({
 			}
 		});
 	},
-	
+
 	stop: function() {
 		console.log("Shutting down DataBase");
 		db.end();
