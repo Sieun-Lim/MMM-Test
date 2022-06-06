@@ -60,56 +60,108 @@ module.exports = NodeHelper.create({
                 let self = this;
 								self.getOutData(payload);
 								self.getHomeData(payload);
+								self.getYesterdayOut(payload);
+								self.getYesterdayHome(payload);
 				break;
         }
     },
 
-	getOutData: async function (payload) {
-		var sampleTimestamp = Date.now();
-		var date = new Date(sampleTimestamp);
-		var year = date.getFullYear().toString().slice(-2);
-		var month = ("0" + (date.getMonth() + 1)).slice(-2);
-		var day = ("0" + date.getDate()).slice(-2);
+		getOutData: async function (payload) {
+			var sampleTimestamp = Date.now();
+			var date = new Date(sampleTimestamp);
+			var year = date.getFullYear().toString().slice(-2);
+			var month = ("0" + (date.getMonth() + 1)).slice(-2);
+			var day = ("0" + date.getDate()).slice(-2);
 
-		var ymd = year + "-" + month + "-" + day;
-		var query = "select temper from temperature_out where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
+			var ymd = year + "-" + month + "-" + day;
+			var query = "select temper from temperature_out where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
 
-		let self = this;
-		db.query(query, function (error, result) {
-			if (error) {
-				console.log(error);
-				self.sendSocketNotification("WEATHER_DATA_ERROR", result);
-			}
-			else {
-				self.sendSocketNotification("WEATHER_DATA_OUT", result);
-			}
-		});
-	},
+			let self = this;
+			db.query(query, function (error, result) {
+				if (error) {
+					console.log(error);
+					self.sendSocketNotification("WEATHER_DATA_ERROR", result);
+				}
+				else {
+					self.sendSocketNotification("WEATHER_DATA_OUT", result);
+				}
+			});
+		},
 
-	getHomeData: async function (payload) {
-		var sampleTimestamp = Date.now();
-		var date = new Date(sampleTimestamp);
-		var year = date.getFullYear().toString().slice(-2);
-		var month = ("0" + (date.getMonth() + 1)).slice(-2);
-		var day = ("0" + date.getDate()).slice(-2);
+		getHomeData: async function (payload) {
+			var sampleTimestamp = Date.now();
+			var date = new Date(sampleTimestamp);
+			var year = date.getFullYear().toString().slice(-2);
+			var month = ("0" + (date.getMonth() + 1)).slice(-2);
+			var day = ("0" + date.getDate()).slice(-2);
 
-		var ymd = year + "-" + month + "-" + day;
-		var query = "select temper from temperature_home where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
+			var ymd = year + "-" + month + "-" + day;
+			var query = "select temper from temperature_home where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
 
-		let self = this;
-		db.query(query, function (error, result) {
-			if (error) {
-				console.log(error);
-				self.sendSocketNotification("WEATHER_DATA_ERROR", result);
-			}
-			else {
-				self.sendSocketNotification("WEATHER_DATA_HOME", result);
-			}
-		});
-	},
+			let self = this;
+			db.query(query, function (error, result) {
+				if (error) {
+					console.log(error);
+					self.sendSocketNotification("WEATHER_DATA_ERROR", result);
+				}
+				else {
+					self.sendSocketNotification("WEATHER_DATA_HOME", result);
+				}
+			});
+		},
 
-	stop: function() {
-		console.log("Shutting down DataBase");
-		db.end();
-	},
+		getYesterdayOut: async function (payload) {
+			var sampleTimestamp = Date.now();
+			var date = new Date(sampleTimestamp);
+			var year = date.getFullYear().toString().slice(-2);
+			var month = ("0" + (date.getMonth() + 1)).slice(-2);
+			var yesterday = new Date(date.setDate(date.getDate() - 1)).toString();
+			var pos = yesterday.split("GMT");
+			yesterday = pos[0].substr(-17);
+			yesterday = yesterday.substr(0,2);
+
+			var ymd = year + "-" + month + "-" + yesterday;
+			var query = "select temper from temperature_out where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
+
+			let self = this;
+			db.query(query, function (error, result) {
+				if (error) {
+					console.log(error);
+					self.sendSocketNotification("WEATHER_DATA_ERROR", result);
+				}
+				else {
+					self.sendSocketNotification("YESTERDAY_OUT", result);
+				}
+			});
+		},
+
+		getYesterdayHome: async function (payload) {
+			var sampleTimestamp = Date.now();
+			var date = new Date(sampleTimestamp);
+			var year = date.getFullYear().toString().slice(-2);
+			var month = ("0" + (date.getMonth() + 1)).slice(-2);
+			var yesterday = new Date(date.setDate(date.getDate() - 1)).toString();
+			var pos = yesterday.split("GMT");
+			yesterday = pos[0].substr(-17);
+			yesterday = yesterday.substr(0,2);
+
+			var ymd = year + "-" + month + "-" + yesterday;
+			var query = "select temper from temperature_home where nowDay=" + "'" + ymd  + "'" + " order by temRank DESC";
+
+			let self = this;
+			db.query(query, function (error, result) {
+				if (error) {
+					console.log(error);
+					self.sendSocketNotification("WEATHER_DATA_ERROR", result);
+				}
+				else {
+					self.sendSocketNotification("YESTERDAY_HOME", result);
+				}
+			});
+		},
+
+		stop: function() {
+			console.log("Shutting down DataBase");
+			db.end();
+		},
 });

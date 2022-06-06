@@ -18,13 +18,12 @@ Module.register("MMM-Test", {
     */
     start: function () {
         Log.info("Starting module: " + this.name);
-		this.weatherInfo = [];
         this.loaded = false;
-        // this.count = 0
-        // var timer = setInterval(() => {
-            // this.updateDom()
-            // this.count++
-        // }, 1000 * 60)
+        this.count = 0
+        var timer = setInterval(() => {
+            this.updateDom()
+            this.count++
+        }, 1000)
     },
 
     getStyles: function () {
@@ -54,18 +53,22 @@ Module.register("MMM-Test", {
 
         var out = this.weatherInfo_out;
         var temp_out = out[0].temper + "°C";
+
+				var yesterday_out = this.weatherYesterday_out;
 				var temp_out_avg = 0;
-				for(var i=0; i<out.length; i++)
-					temp_out_avg += out[i].temper;
-				temp_out_avg = Math.round(temp_out_avg/out.length*10)/10;
+				for(var i=0; i<yesterday_out.length; i++)
+					temp_out_avg += oyesterday_outut[i].temper;
+				temp_out_avg = Math.round(temp_out_avg/yesterday_out.length*10)/10;
 				temp_out_avg = temp_out_avg + "°C";
 
 				var home = this.weatherInfo_home;
         var temp_home = home[0].temper + "°C";
+
+				var yesterday_home = this.weatherYesterday_home;
 				var temp_home_avg = 0;
-				for(var i=0; i<home.length; i++)
-					temp_home_avg += home[i].temper;
-				temp_home_avg = Math.round(temp_home_avg/home.length*10)/10;
+				for(var i=0; i<yesterday_home.length; i++)
+					temp_home_avg += yesterday_home[i].temper;
+				temp_home_avg = Math.round(temp_home_avg/yesterday_home.length*10)/10;
 				temp_home_avg = temp_home_avg + "°C";
 
         for(var i=0; i<3; i++) {
@@ -171,7 +174,7 @@ Module.register("MMM-Test", {
 		  this.getWeatherInfo();
 		  var timer = setInterval(() => {
             this.getWeatherInfo();
-		  }, 60000);
+		  }, 1000);
 		  break;
 	  }
 	},
@@ -188,6 +191,16 @@ Module.register("MMM-Test", {
 				this.loaded = true;
 				console.log("NotificationReceived:" + notification);
 				this.weatherInfo_home = payload;
+				break;
+			case "YESTERDAY_OUT":
+				this.loaded = true;
+				console.log("NotificationReceived:" + notification);
+				this.weatherYesterday_out = payload;
+				break;
+			case "YESTERDAY_HOME":
+				this.loaded = true;
+				console.log("NotificationReceived:" + notification);
+				this.weatherYesterday_home = payload;
 				this.updateDom();
 				break;
 			case "WEATHER_DATA_ERROR":
